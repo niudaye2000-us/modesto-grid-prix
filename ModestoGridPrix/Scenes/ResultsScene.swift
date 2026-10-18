@@ -13,6 +13,9 @@ final class ResultsScene: SKScene {
     private let playerId: Int
     private let againName = "again"
     private let menuName = "menu"
+    /// Set by GameView.
+    var onRaceAgain: (() -> Void)?
+    var onMenu: (() -> Void)?
 
     init(size: CGSize, finishingOrder: [Car], playerId: Int) {
         self.order = finishingOrder
@@ -123,11 +126,9 @@ final class ResultsScene: SKScene {
         guard let t = touches.first else { return }
         let name = atPoint(t.location(in: self)).name
         if name == againName {
-            let race = RaceScene(size: size); race.scaleMode = .resizeFill
-            view?.presentScene(race, transition: .fade(withDuration: 0.4))
+            onRaceAgain?()
         } else if name == menuName {
-            let menu = MenuScene(size: size); menu.scaleMode = .resizeFill
-            view?.presentScene(menu, transition: .fade(withDuration: 0.4))
+            onMenu?()
         }
     }
 }

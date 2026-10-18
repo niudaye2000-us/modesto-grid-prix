@@ -10,16 +10,20 @@ enum GameConstants {
 
     // MARK: Car physics (arcade, points-per-second in scene units)
 
-    /// Forward acceleration while the throttle is held (units/s^2).
-    static let enginePower: CGFloat = 520
+    /// Forward acceleration while the throttle is held (units/s^2). Shared baseline (AI).
+    static let enginePower: CGFloat = 2500
+    /// Player gets a stronger launch so they can keep up with / pass the field.
+    static let playerEnginePower: CGFloat = 4200
+    /// Player top speed (higher than AI top speed so the player can run them down).
+    static let playerMaxSpeed: CGFloat = 1150
     /// Deceleration while braking (units/s^2).
     static let brakePower: CGFloat = 900
     /// Passive drag when neither accelerating nor braking (fraction/sec).
     static let rollingDrag: CGFloat = 0.6
     /// Top speed on tarmac (units/s).
-    static let maxSpeed: CGFloat = 820
+    static let maxSpeed: CGFloat = 1000
     /// How quickly the car can rotate (radians/sec) at speed.
-    static let steerRate: CGFloat = 3.0
+    static let steerRate: CGFloat = 0.5
     /// Grip: how fast sideways velocity is bled off (higher = less drift).
     static let grip: CGFloat = 6.0
 

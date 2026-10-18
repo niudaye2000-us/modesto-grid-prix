@@ -30,12 +30,15 @@ enum CarPhysics {
         let fwdSpeed = car.velocity.x * forward.x + car.velocity.y * forward.y
 
         let onTrack = track.isOnTrack(car.position)
-        let topSpeed = onTrack ? GameConstants.maxSpeed : GameConstants.offTrackMaxSpeed
+        // Player gets higher power + top speed so they can run down the AI field.
+        let enginePower = car.isPlayer ? GameConstants.playerEnginePower : GameConstants.enginePower
+        let carMaxSpeed = car.isPlayer ? GameConstants.playerMaxSpeed : GameConstants.maxSpeed
+        let topSpeed = onTrack ? carMaxSpeed : GameConstants.offTrackMaxSpeed
 
         // --- Longitudinal: throttle / brake / drag -------------------------
         var newFwd = fwdSpeed
         if car.throttle > 0 {
-            newFwd += GameConstants.enginePower * car.throttle * dt
+            newFwd += enginePower * car.throttle * dt
         }
         if car.brake > 0 {
             // Brake reduces forward speed toward 0 (and a little reverse).
@@ -53,7 +56,7 @@ enum CarPhysics {
 
         // --- Steering: rotate heading, scaled by speed --------------------
         // Steering authority ramps up with speed then saturates.
-        let speedFactor = min(1, abs(newFwd) / 240)
+        let speedFactor = min(1, abs(newFwd) / 150)
         let turn = car.steer * GameConstants.steerRate * speedFactor * dt
         // Reverse the turn direction when going backwards (feels natural).
         car.heading += (newFwd >= 0 ? turn : -turn)

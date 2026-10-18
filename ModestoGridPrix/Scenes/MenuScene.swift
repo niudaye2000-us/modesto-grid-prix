@@ -9,6 +9,8 @@ import SpriteKit
 final class MenuScene: SKScene {
 
     private let startButtonName = "startButton"
+    /// Set by GameView; called when the player taps Start.
+    var onStart: (() -> Void)?
 
     override func didMove(to view: SKView) {
         backgroundColor = SKColor(red: 0.08, green: 0.10, blue: 0.14, alpha: 1)
@@ -59,7 +61,7 @@ final class MenuScene: SKScene {
         addChild(label)
 
         // Controls hint
-        let hint = SKLabelNode(text: "Tilt to steer  ·  hold ▶ to accelerate  ·  hold ◀ to brake")
+        let hint = SKLabelNode(text: "Hold ▲ to accelerate  ·  ▼ to brake  ·  ◀ ▶ to steer")
         hint.fontName = "AvenirNext-Medium"
         hint.fontSize = min(18, size.width * 0.028)
         hint.fontColor = SKColor(white: 0.75, alpha: 1)
@@ -67,7 +69,7 @@ final class MenuScene: SKScene {
         hint.horizontalAlignmentMode = .center
         addChild(hint)
 
-        let laps = SKLabelNode(text: "\(GameConstants.defaultLaps) laps  ·  \(GameConstants.defaultOpponents) opponents")
+        let laps = SKLabelNode(text: "\(GameConstants.defaultLaps) laps  Â·  \(GameConstants.defaultOpponents) opponents")
         laps.fontName = "AvenirNext-Medium"
         laps.fontSize = min(16, size.width * 0.025)
         laps.fontColor = SKColor(white: 0.55, alpha: 1)
@@ -85,8 +87,6 @@ final class MenuScene: SKScene {
     }
 
     private func startRace() {
-        let race = RaceScene(size: size)
-        race.scaleMode = .resizeFill
-        view?.presentScene(race, transition: .fade(withDuration: 0.4))
+        onStart?()
     }
 }
